@@ -1,0 +1,11 @@
+int clr() { // 게임 클리어 조건 설정
+	int cnt = 0;
+	for (int i = 0; i < 30; i++)
+		for (int j = 0; j < 30; j++)
+			if (map_f[i][j][0] == '$' && empty[i][j] == 'O')
+				cnt++; // 박스 공간만을 저장한 배열과 맵 현재파일의 배열을 비교하여 박스 위치와 박스 공간 위치가 같은지 비교
+	if (cnt == rm_pl) // 같을 시 1, 다를 시 0을 리턴
+		return 1;
+	else
+		return 0;
+}
