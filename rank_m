@@ -1,0 +1,9 @@
+void rank_m() { // 랭크파일 생성
+	FILE *rf = fopen("ranking", "w"); // 랭크 파일 자체 생성 또는 덮어쓰기와 그 파일에 대한 변수 설정
+	for (int i = 0; i < 5; i++) { // 반복문을 통한 랭크 파일 생성
+		fprintf(rf, "map %d\n", i + 1);
+		for (int j = 0; j < line_n[i]; j++)
+			fprintf(rf, "%s %d\n", rk_n[i][j], rk_t[i][j]);
+	}
+	fclose(rf);
+}
