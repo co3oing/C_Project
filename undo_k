@@ -1,0 +1,5 @@
+void undo_k(char c) { // undo시 키보드 입력값의 백업 저장
+	for (int i = 4; i > 0; i--)
+		b_key[i] = b_key[i - 1];
+	b_key[0] = c; // undo 입력 후에 플레이어의 좌표값을 다시 이동시켜주기 위한 키보드값 백업
+}
