@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include <termio.h> // 헤더
+
+#define N 11 // 이름 배열 값 지정
+
+char map_f[30][30][6]; // 맵파일 저장, [x좌표][y좌표][undo 순서]
+char empty[30][30]; // 상자 자리 위치 저장을 위해 원본 맵 저장할 배열 선언
+int box = 0, rm_pl = 0; // box : 보물상자 갯수, rm_pl : 상자 자리 갯수
+int p_x, p_y;  // player 좌표
+int com_y; // COMMAN 줄의 Y축 좌표
+char name[N]; // 이름
+int m_n = 1; // 맵 넘버
+int cnt_u = 0; // undo 횟수
+char b_key[5]; // back key : 이전에 눌렀던 방향키 저장, undo를 통한 플레이어 좌표값 이동에 이용
+int k_mv = 0; // 플레이어 이동 횟수 : undo 오류 방지
+time_t start, end; // 시간 시작과 끝 지점
+int dif = 0; // 시간 차이
+int line_n[5] = { 0,0,0,0,0 }; // ranking 줄 카운트
+unsigned int rk_t[5][5]; // 랭크 시간
+char rk_n[5][5][11]; // 랭크 이름
+
+void name_w(); // 이름 저장
+void mv_cur(int x, int y); // 커서 위치 변경
+void map(int m_num); // 맵 출력, 배열에 저장
+int getch(); // getch
+void key(); //키보드 입력
+void com_cur(); // 커맨드 위치 커서 이동
+void dis(); // 설명서
+void move(char c); // 플레이어 이동
+void undo_a(); // undo act
+void undo_s(); // undo save
+void undo_k(char c); //undo key save
+void chk_p(); // place check
+int clr(); // 맵 클리어 체크
+void save(); // 세이브 파일 생성
+void load(); // 세이브 파일 로드
+void rank_r(); // 랭크 파일 읽기
+void rank_m(); // 랭크 파일 생성
+void rank_i(); // 랭크 삽입
+void rank_p(char op); // 랭크 출력, op : 0 ~ 5 (0 : 전체, 1 ~ 5 : 해당 맵)
+
+int main() {
+	name_w(); //이름 저장
+	rank_r(); //랭크파일 읽기
+	map(m_n++); // 다음 맵을 출력하기 위해 m_n++ 이용
+	com_cur();
+	time(&start); // 맵 출력 후 시작 시간 지정
+	while (1) {
+		key(); 
+		if (m_n == 6) // 5번째 맵 이후 while문 종료
+			break;
+		system("clear"); // 다음 맵 출력 위해 화면 정리
+		map(m_n++);
+		k_mv = 0; // 키보드 움직임 횟수 초기화
+		cnt_u = 0; // 언도 횟수 초기화
+		com_cur(); // 커서 위치로 이동
+		dif = 0; // 총 시간 초기화
+		time(&start); // 클리어 후 다시 시작 시간 초기화
+	}
+	system("clear");
+	mv_cur(0, 0);
+	printf("\n\n\n       Congratulation!!!\n\n\n"); // 축하 메세지
+	return 0;
+}

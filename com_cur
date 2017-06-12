@@ -1,0 +1,5 @@
+void com_cur() {
+	mv_cur(11, com_y); // 커서 위치 이동
+	printf("                                    ");  // 써놓은건 삭제를 위한 공백 출력
+	mv_cur(11, com_y); // 커서 위치 재 이동
+}

@@ -1,0 +1,22 @@
+void name_w() {
+	int i = 0, c;
+
+	system("clear");
+	printf("Start...\n"); // 시작
+	printf("input name : "); // 이름 입력
+	while (1) { 
+		c = getchar();
+		if ((c == ' ') || (i == N)) { // 10글자 이상이거나 공백이있으면 재입력
+			if (c != '\n') // 11글자 입력시 생기는 오류에대한 수정
+				while ((c = getchar()) != '\n');
+			printf("이름을 다시 입력하세요 : "); // 출력
+			i = 0;
+			continue; // 반복문 처음으로 이동
+		}
+		if ((c == '\n') || (c == EOF)) { // 엔터까지 입력
+			name[i++] = '\0';  // 마지막을 널문자로 대체
+			break; // 반복문 종료
+		}
+		name[i++] = c; // 이름의 배열에 입력
+	}
+}

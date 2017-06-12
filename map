@@ -1,0 +1,58 @@
+void map(int m_num) { // m_num : 1 ~ 5
+	FILE *fp = NULL; // 맵 파일 변수 지정
+	if (!fopen("map.txt", "r")) { // 맵 파일이 존재하는지에 대한 확인
+		printf("Map File Doesn't exist.");
+		exit(1);
+	}
+	fp = fopen("map.txt", "r"); // 맵 파일 입력
+	char c; // 입력 받을 변수 설정
+	int i = 0, j = 0;  // 좌표
+	int num1 = 0, num2 = 0; // 원하는 맵을 출력하기 위한 조건의 변수
+	box = 0; // 박스 갯수
+	rm_pl = 0; // 박스가 들어갈 공간의 갯수
+	for (int i = 0; i < 30; i++)
+		for (int j = 0; j < 30; j++) { // 반복문을 이용한 맵 파일 비우기
+				empty[i][j] = '\0'; // 원본 파일을 비움
+			for (int k = 0; k < 6; k++) // 언도를 위해 저장한 맵파일까지 비우기 위한 반복문 설정
+				map_f[i][j][k] = '\0'; // \0 = 존재하지않는 공간, NULL
+		}
+	while (1) {
+		fscanf(fp, "%c", &c); // 파일 스캔
+		if (c == 'm') 
+			num1++;
+		if (c == 'p')
+			num2++; // m과 p를 이용해서 원하는 맵파일 출력
+		if (num1 == m_num && num2 == m_num && c != 'p' && c != 'e') { // 원하는 번호의 맵파일을 출력하고 끝을 지정하기위해 조건 추가
+			map_f[i][j][0] = c; // 입력
+			empty[i][j] = c; // 원본 파일 저장
+			if (c == '@') { // 플레이어 위치 좌표 저장
+				p_x = i;
+				p_y = j;
+			}
+			else if (c == 'O') // 박스 넣어야하는 공간 갯수
+				rm_pl++;
+			else if (c == '$') // 박스 갯수
+				box++;
+			if (c == '\n') { // 개행시 y축의 좌표 증가 및 x축 좌표 초기화
+				j++;
+				i = 0;
+			}
+			else 
+				i++; // x축 좌표값 증가
+		}
+		if (num1 > m_num || c == 'e') {
+			com_y = j + 3; // (Command)의 y축 좌표 저장
+			break; // 반복문 탈출
+		}
+	}
+	system("clear");
+	mv_cur(0, 0);
+	printf("\n      Hello %s\n\n", name);
+	if (box != rm_pl)
+		printf("Map%d File Error", m_num); // 박스의 갯수와 박스의 공간의 갯수의 비교
+	else
+		for (int a = 1; a < j; a++)
+			for (int b = 0; b < 30; b++)
+				printf("%c", map_f[b][a][0]); // 맵 출력
+	printf("(Command) "); // 커맨드 출력
+}
