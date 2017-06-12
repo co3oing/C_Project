@@ -303,6 +303,53 @@ void key() { // 누르는 키보드 값에 대한 명령 수행
 	}
 }
 
+void dis() { // display help(설명서 출력)
+	system("clear");
+	printf("      Hello %s\n", name);
+	printf("---------------------------명령---------------------------\n\n");
+	printf("u(undo) : 최대 5번 할 수 있습니다.\n\n");
+	printf("r(replay) : 현재 맵을 처음부터 다시 시작합니다.\n\n");
+	printf("n(new) : 첫 번째 맵부터 다시 시작합니다.\n\n");
+	printf("e(exit) : 게임을 종료합니다.\n\n");
+	printf("s(save) : 현재 상태를 저장합니다.\n\n");
+	printf("f(file load) : 저장된 시점부터 이어서 게임합니다.\n\n");
+	printf("d(display help) : 명령 내용을 보여줍니다.\n\n");
+	printf("t(top) : 게임 순위를 보여줍니다.\n");
+	printf("        t 다음 숫자가 오면 해당 맵의 순위를 보여줍니다.\n\n");
+	printf("----------------------press any key-----------------------\n");
+	getch(); // 아무키나 눌렀을시 이전 화면으로 돌아감
+	system("clear");
+	printf("\n      Hello %s\n\n", name);
+	for (int a = 1; a < 30; a++)
+		for (int b = 0; b < 30; b++)
+			printf("%c", map_f[b][a][0]); // 저장해 놓았던 현재 상황 맵 출력
+	printf("(Command) ");
+}
+
+void undo_a() { // undo 실행
+	mv_cur(0, 4);
+	for (int i = 1; i < 30; i++)
+		for (int j = 0; j < 30; j++)
+			printf("%c", map_f[j][i][1]); // 맵 파일의 첫번째 undo 저장값 출력
+	for (int k = 0; k < 5; k++) 
+		for (int i = 0; i < 30; i++)
+			for (int j = 0; j < 30; j++)
+				map_f[i][j][k] = map_f[i][j][k + 1]; // undo 이후 저장된 맵 파일의 재정렬
+}
+
+void undo_s() { // undo 맵 파일 생성
+	for(int k = 5; k > 0; k--) // undo 맵 파일들을 뒤로 한칸 씩 땡겨주기위한 for문의 이용
+		for (int j = 0; j < 30; j++)
+			for (int i = 0; i < 30; i++)
+				map_f[i][j][k] = map_f[i][j][k - 1];
+}
+
+void undo_k(char c) { // undo시 키보드 입력값의 백업 저장
+	for (int i = 4; i > 0; i--)
+		b_key[i] = b_key[i - 1];
+	b_key[0] = c; // undo 입력 후에 플레이어의 좌표값을 다시 이동시켜주기 위한 키보드값 백업
+}
+
 void move(char c) { // 방향키 이동
 	switch (c) {
 	case 'h': // 왼쪽
