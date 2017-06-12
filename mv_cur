@@ -1,0 +1,3 @@
+void mv_cur(int x, int y) { // 리눅스 환경설정을 통한 커서의 좌표 이동
+	printf("\033[%dG\033[%dd", x, y);
+}
