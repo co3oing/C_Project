@@ -1,0 +1,6 @@
+void undo_s() { // undo 맵 파일 생성
+	for(int k = 5; k > 0; k--) // undo 맵 파일들을 뒤로 한칸 씩 땡겨주기위한 for문의 이용
+		for (int j = 0; j < 30; j++)
+			for (int i = 0; i < 30; i++)
+				map_f[i][j][k] = map_f[i][j][k - 1];
+}
