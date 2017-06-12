@@ -1,0 +1,123 @@
+void key() { // 누르는 키보드 값에 대한 명령 수행
+	char c, bef, r_num; // 변수들 지정
+	while (c = getch()) { //while
+		switch (c) {
+			case 'h' :
+			case 'j' :
+			case 'k' :
+			case 'l' : // 좌우상하의 방향키
+				com_cur();
+				move(c); // 따로 함수를 통해 방향에 대한 함수 설정
+				break;
+			case 10 : // 엔터(Enter)키의 아스키 코드값 : 10
+				com_cur();
+				switch (bef) { // 방향키를 제외한 입력 받은 값을 넣어준 후, 그에 따른 실행을 위한 switch문 설정
+					case 'e': // exit
+						time(&end);  // 정보 저장을 위해 시간 종료 값 저장
+						dif += (end - start); // 플레이 시간 저장
+						save(); // 저장 함수
+						system("clear"); 
+						mv_cur(0, 0);
+						printf("\nSEE YOU %s . . . .\n", name);
+						exit(1); // 프로그램 종료
+						break;
+					case 'r': // replay
+						mv_cur(0, 0); 
+						map(m_n - 1); // 후위 연산자를 통해 이미 1의 값이 증가된 상태이기에 1을 감소시킨 후 맵을 출력
+						cnt_u = 0; 
+						k_mv = 0; // 카운트 횟수와 이동 횟수 초기화
+						break;
+					case 'n': // new game
+						mv_cur(0, 0);
+						m_n = 2; // 후위 연산자 사용을 위해 2로 지정
+						map(1); // 맵을 처음부터 다시 시작
+						cnt_u = 0;
+						k_mv = 0; // 카운트 횟수와 이동 횟수 초기화
+						time(&start); // 시간 시작 지점 초기화
+						break;
+					case 'd': // display help
+						dis();  // 따로 함수 지정
+						break;
+					case 'u': // undo
+						if (cnt_u < 5 && k_mv != 0) { // 언도 카운트가 한도를 넘었거나, 이동하지 않았을 경우를 배제
+							switch (b_key[0]) { // 최근 눌렀던 키를 이용한 플레이어 좌표 변환
+								case 'h': 
+									p_x++;
+									break;
+								case 'j':
+									p_y--;
+									break;
+								case 'k':
+									p_y++;
+									break;
+								case 'l':
+									p_x--;
+									break;
+							}
+							for (int i = 0; i < 4; i++) // 키보드 이동 백업 값을 재 정렬
+								b_key[i] = b_key[i + 1];
+							b_key[4] = '\0'; // 마지막 칸을 비움
+							undo_a(); // undo 실행
+							cnt_u++; // undo 횟수 증가
+							k_mv--; // 키보드 이동 횟수 값 감소
+							com_cur();
+						}
+						else if (k_mv == 0) { // 움직인적이 없을 시 오류 출력
+							com_cur();
+							printf("Please move first.");
+						}
+						else {
+							com_cur();
+							printf("You cannot use undo more."); // undo 횟수 초과시 오류 출력
+						}
+						break;
+					case 's': // save
+						time(&end); // 정보 저장을 위해 시간 종료 값 저장
+						dif += (end - start); // 시간 저장
+						save(); // 플레이 상황 저장
+						com_cur(); 
+						break;
+					case 'f': // load file
+						load(); // 함수 지정
+						time(&start); // 시간 시작 지점 초기화
+						break;
+					case 't': // top
+						rank_p(r_num); // 지정된 숫자에 따라 랭크 목록 출력
+						break;
+				}
+				bef = 32;
+				break;
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5': // top에서 원하는 map의 랭크 목록만을 보기 위한 숫자 지정
+				if (bef == 't') { // t를 입력한 후에만 입력 가능
+					mv_cur(12, com_y);
+					printf("%c", c);
+					r_num = c; // rank_p함수를 이용하기 위한 숫자 입력
+				}
+				else {
+					com_cur();
+					printf("%c", c);
+					bef = c;
+				}
+				break;	
+			default : // 방향키, 엔터, t이후의 숫자를 제외한 나머지 명령어 입력
+				com_cur();
+				printf("%c", c); // 받은 입력키 출력
+				bef = c; // 엔터 입력시 원하는 명령 실행을 위한 키보드 값의 저장
+				if (bef == 't')
+					r_num = '0'; // t를 입력시 rank_p에서 전체 랭크 목록 출력을 위한 0의 값 저장
+				break;
+		}
+		if (clr()) { // 클리어 조건 함수 지정, if문을 이용하여 리턴값에 따른 실행
+			com_cur();
+			time(&end); // 시간 종료값 지정
+			dif += (end - start); // 시간 저장
+			rank_i(); // 현재 랭크값 정렬
+			rank_m(); // 랭크 파일 생성
+			break;
+		}
+	}
+}
