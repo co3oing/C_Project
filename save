@@ -1,0 +1,21 @@
+void save() { // file save
+	FILE *sf = fopen("sokoban", "w"); // sokoban 파일 생성 또는 덮어쓰기
+	fprintf(sf, "%s %d %d %d %d\n", name, dif, m_n - 1, cnt_u, k_mv); // 이름 시간 맵번호 undo횟수 키보드이동횟수 저장
+	for (int i = 0; i < k_mv; i++) 
+		fprintf(sf, "%c", b_key[i]); // 키보드의 이동값 백업 저장
+	fprintf(sf, "\n");
+	for (int k = 0; k < 6; k++) {
+		for (int j = 0; j < 30; j++)
+			for (int i = 0; i < 30; i++) {
+				fprintf(sf, "%c", map_f[i][j][k]); // 반복문을 통한 맵 파일 및 맵의 undo파일 저장
+				if (map_f[i][j][k] == '\0')
+					break;
+			}
+		fprintf(sf, "U"); //중간에 U를 이용하여 undo 및 맵 파일들을 구분
+	}
+	for (int i = 0; i < 30; i++)
+		for (int j = 0; j < 30; j++)
+			fprintf(sf, "%c", empty[j][i]); // 원본파일을 저장파일에 저장
+	fprintf(sf, "S"); // 원본파일의 끝지점 저장
+	fclose(sf);
+}
