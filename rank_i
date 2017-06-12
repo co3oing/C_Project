@@ -1,0 +1,38 @@
+void rank_i() { // 랭크 정렬
+	if (rk_t[m_n - 2][0] > dif) { // 클리어시 시간이 다른 기록보다 제일 적은경우의 정렬
+		for (int i = 4; i > 0; i--) {
+			rk_t[m_n - 2][i] = rk_t[m_n - 2][i - 1];
+			strcpy(rk_n[m_n - 2][i], rk_n[m_n - 2][i - 1]);
+		}
+		strcpy(rk_n[m_n - 2][0], name);
+		rk_t[m_n - 2][0] = dif;
+		if (line_n[m_n - 2] != 5)
+			line_n[m_n - 2]++;
+	}
+	else if (rk_t[m_n - 2][0] == '\0') { // 랭크 기록이 없을경우
+		rk_t[m_n - 2][0] = dif;
+		strcpy(rk_n[m_n - 2][0], name);
+		line_n[m_n - 2]++;
+	}
+	else if (rk_t[m_n - 2][line_n[m_n - 2]] < dif) { // 존재하는 기록이 4개 이하인데, 존재하는 모든 기록보다 클리어 시간이 클 경우
+		rk_t[m_n - 2][line_n[m_n - 2]] = dif;
+		strcpy(rk_n[m_n - 2][line_n[m_n - 2]], name);
+		if (line_n[m_n - 2] != 5)
+			line_n[m_n - 2]++;
+	}
+	else { // 기록이 랭크 사이에 있을경우의 정렬
+		for (int i = 0; i < 5; i++) {
+			if (rk_t[m_n - 2][i] <= dif && rk_t[m_n - 2][i + 1] > dif) {
+				for (int j = 4; j > i + 1; j--) {
+					rk_t[m_n - 2][j] = rk_t[m_n - 2][j - 1];
+					strcpy(rk_n[m_n - 2][j], rk_n[m_n - 2][j - 1]);
+				}
+				strcpy(rk_n[m_n - 2][i + 1], name);
+				rk_t[m_n - 2][i + 1] = dif;
+				if (line_n[m_n - 2] != 5)
+					line_n[m_n - 2]++;
+				break;
+			}
+		}
+	}
+}
