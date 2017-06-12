@@ -1,0 +1,26 @@
+void rank_r(){ // rank 파일 불러오기
+	int op, k = 0; 
+	int temp_t; // 시간을 받을 변수 저장
+	char temp_n[11]; // 이름을 받을 변수 저장
+	FILE *rf = NULL; // 랭크파일 저장 받을 변수 선언
+	if (!fopen("ranking", "r")) { // 랭크파일 있는지 확인
+		rf = fopen("ranking", "w"); // 없을시 생성
+		fclose(rf);
+	}
+	else {
+		rf = fopen("ranking", "r"); // 랭크 파일 존재시 파일 오픈
+		while (!feof(rf)) { //파일의 끝까지 읽기
+			fscanf(rf, "%s %d\n", &temp_n, &temp_t); // 이름, 시간 순서대로 스캔
+			if (temp_t < 6) { // 맵을 의미하는 행을 인식하기 위한 방법
+				op = temp_t;
+				k = 0;
+			}
+			else { // 맵을 의미하지 않을경우 인식
+				rk_t[op - 1][k] = temp_t;
+				strcpy(rk_n[op - 1][k++], temp_n);
+				line_n[op - 1]++; // 각 랭크의 행 숫자 계산
+			}
+		}
+		fclose(rf);
+	}
+}
