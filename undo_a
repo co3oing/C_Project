@@ -1,0 +1,10 @@
+void undo_a() { // undo 실행
+	mv_cur(0, 4);
+	for (int i = 1; i < 30; i++)
+		for (int j = 0; j < 30; j++)
+			printf("%c", map_f[j][i][1]); // 맵 파일의 첫번째 undo 저장값 출력
+	for (int k = 0; k < 5; k++) 
+		for (int i = 0; i < 30; i++)
+			for (int j = 0; j < 30; j++)
+				map_f[i][j][k] = map_f[i][j][k + 1]; // undo 이후 저장된 맵 파일의 재정렬
+}

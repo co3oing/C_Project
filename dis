@@ -1,0 +1,22 @@
+void dis() { // display help(설명서 출력)
+	system("clear");
+	printf("      Hello %s\n", name);
+	printf("---------------------------명령---------------------------\n\n");
+	printf("u(undo) : 최대 5번 할 수 있습니다.\n\n");
+	printf("r(replay) : 현재 맵을 처음부터 다시 시작합니다.\n\n");
+	printf("n(new) : 첫 번째 맵부터 다시 시작합니다.\n\n");
+	printf("e(exit) : 게임을 종료합니다.\n\n");
+	printf("s(save) : 현재 상태를 저장합니다.\n\n");
+	printf("f(file load) : 저장된 시점부터 이어서 게임합니다.\n\n");
+	printf("d(display help) : 명령 내용을 보여줍니다.\n\n");
+	printf("t(top) : 게임 순위를 보여줍니다.\n");
+	printf("        t 다음 숫자가 오면 해당 맵의 순위를 보여줍니다.\n\n");
+	printf("----------------------press any key-----------------------\n");
+	getch(); // 아무키나 눌렀을시 이전 화면으로 돌아감
+	system("clear");
+	printf("\n      Hello %s\n\n", name);
+	for (int a = 1; a < 30; a++)
+		for (int b = 0; b < 30; b++)
+			printf("%c", map_f[b][a][0]); // 저장해 놓았던 현재 상황 맵 출력
+	printf("(Command) ");
+}
